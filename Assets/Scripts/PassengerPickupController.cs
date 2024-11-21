@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PassengerPickupController : MonoBehaviour
 {
@@ -10,6 +12,10 @@ public class PassengerPickupController : MonoBehaviour
     private GameObject taxi;
     public int totalScore;
     public List<PassengerController> pcArray;
+    public TextMeshProUGUI passengerCountText;
+    private int passengerCount;
+    
+    [SerializeField] private AudioSource pickupSound;
     void Start()
     {
         taxi = gameObject;
@@ -19,6 +25,7 @@ public class PassengerPickupController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        passengerCountText.text = "Passengers: " + passengerCount;
         time += Time.deltaTime;
     }
 
@@ -46,6 +53,7 @@ public class PassengerPickupController : MonoBehaviour
 
     void PickupPassenger(float pickupTime, Collider passenger)
     {
+        pickupSound.Play();
         PassengerController pc = passenger.GetComponent<PassengerController>();
         pc.pickupTime = time;
         pc.gameObject.transform.SetParent(taxi.transform);
@@ -54,10 +62,15 @@ public class PassengerPickupController : MonoBehaviour
         passenger.GetComponent<CapsuleCollider>().enabled = false;
         pc.HighlightDestination();
         pcArray.Add(pc);
+        passengerCount++;
+        TutorialManager.Instance.passengerPickedUp = true;
+        Debug.Log(TutorialManager.Instance.passengerPickedUp);
+
     }
 
     void DropOffPassenger(float pickupTime, Collider destination)
     {
+        pickupSound.Play();
         foreach(PassengerController pc in pcArray)
         {
             if (pc.finalDest == destination.gameObject && pc.gameObject != null)
@@ -69,6 +82,8 @@ public class PassengerPickupController : MonoBehaviour
                 Destroy(pc.gameObject);
                 destination.gameObject.SetActive(false);
                 Debug.Log(pc.score);
+                passengerCount--;
+                TutorialManager.Instance.passengerDroppedOff = true;
             }
         }
     }
