@@ -11,12 +11,11 @@ public class PassengerController : MonoBehaviour
     [SerializeField] GameObject[] destinations;
     public GameObject finalDest;
     private Transform child;
-    private int rand;
+
     void Start()
     {
         scoreScale = 3;
-        rand = Random.Range(0, 1);
-        finalDest = destinations[rand];
+        
 
         if (transform.childCount > 0)
         {
@@ -24,15 +23,32 @@ public class PassengerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+     public void SetRandomInactiveDestination()
     {
-        
+        List<GameObject> inactiveDestinations = new List<GameObject>();
+        foreach (GameObject destination in destinations)
+        {
+            if (!destination.activeSelf)
+            {
+                inactiveDestinations.Add(destination);
+            }
+        }
+
+        if (inactiveDestinations.Count > 0)
+        {
+            int rand = Random.Range(0, inactiveDestinations.Count);
+            finalDest = inactiveDestinations[rand];
+            finalDest.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("No inactive destinations available.");
+        }
+        HighlightDestination();
     }
 
     public void HighlightDestination()
     {
         finalDest.gameObject.SetActive(true);
     }
-    
 }

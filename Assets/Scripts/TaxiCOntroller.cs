@@ -104,14 +104,18 @@ public class TaxiCOntroller : MonoBehaviour
             }
         }
         
-        if (Mathf.Abs(transform.rotation.z) > 60)
+        
+        //Debug.Log("Flipped");
+        //flipTaxiHint.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.R) && 
+            (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && 
+            rb.velocity.magnitude <= 0.1f)
         {
-            Debug.Log("Flipped");
-            //flipTaxiHint.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.R))
+            GameObject teleportTarget = GameObject.Find("TeleportTarget");
+            if (teleportTarget != null)
             {
-                transform.position = new Vector3(transform.position.x , 0, transform.position.z);
-                transform.rotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+                transform.position = teleportTarget.transform.position;
+                transform.rotation = teleportTarget.transform.rotation;
             }
         }
     }
