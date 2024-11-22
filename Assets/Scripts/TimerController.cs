@@ -1,15 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TimerController : MonoBehaviour
 {
-    public float countdownTime = 300f; // 5 minutes in seconds
+    public float countdownTime; 
     public TextMeshProUGUI timerText;
     public GameObject endScreen;
-
+    public TextMeshProUGUI endScreenText;
+    public PassengerPickupController ppc;
+    
     private float currentTime;
     private bool isGameEnded = false;
 
@@ -28,7 +28,7 @@ public class TimerController : MonoBehaviour
             currentTime--;
             UpdateTimerText();
         }
-        EndGame();
+        ppc.EndGame(); // Default values if the game ends due to time running out
     }
 
     void UpdateTimerText()
@@ -36,16 +36,16 @@ public class TimerController : MonoBehaviour
         int minutes = Mathf.FloorToInt(currentTime / 60);
         int seconds = Mathf.FloorToInt(currentTime % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        //Debug.Log(string.Format("{0:00}:{1:00}", minutes, seconds));
     }
 
-    void EndGame()
+    public void EndGame(int totalScore, int scoreGained, int scoreLost, int passengersTransported, float gameDuration)
     {
         if (!isGameEnded)
         {
             isGameEnded = true;
             Time.timeScale = 0f; // Pause the game
             endScreen.SetActive(true);
+            endScreenText.text = $"Game Duration: {gameDuration:F2} seconds\nTotal: {totalScore}\nRands Gained: {scoreGained}\nRands Lost: {scoreLost}\nPassengers Transported: {passengersTransported}";
         }
     }
 }

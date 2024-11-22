@@ -22,6 +22,7 @@ public class TaxiCOntroller : MonoBehaviour
     [SerializeField] private GameObject flipTaxiHint;
     [SerializeField] private AudioSource engineSound;
     [SerializeField] private AudioSource tireScreechSound;
+    [SerializeField] private GameObject pauseMenu;
     private float speed; // Speed in km/h
     
     private void Start()
@@ -45,6 +46,8 @@ public class TaxiCOntroller : MonoBehaviour
 
         // Breaking Input
         isBreaking = Input.GetKey(KeyCode.Space);
+        
+        pauseMenu.SetActive(false);
     }
 
     private void HandleMotor() {
@@ -118,6 +121,17 @@ public class TaxiCOntroller : MonoBehaviour
                 transform.rotation = teleportTarget.transform.rotation;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            Time.timeScale = 0f;
+            pauseMenu.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
+            pauseMenu.SetActive(false);
+        }
     }
     private void LimitSpeed() {
         float maxSpeedMs = maxSpeedKmH / 1.6f; // Convert max speed to m/s
@@ -125,5 +139,6 @@ public class TaxiCOntroller : MonoBehaviour
             rb.velocity = rb.velocity.normalized * maxSpeedMs;
         }
     }
+    
 }
 

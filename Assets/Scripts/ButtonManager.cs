@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
-    [SerializeField] private GameObject HowToScreen;
+    [SerializeField] private GameObject PauseMenu;
     void Start()
     {
         
@@ -19,17 +19,25 @@ public class ButtonManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Game");
     }
-
-    public void HowToPlayEnable()
+    
+    public void StartTutorial()
     {
-        HowToScreen.SetActive(true);
+        SceneManager.LoadScene("Tutorial");
     }
-
-    public void HowToPlayDisable()
+    
+    
+    public void MainMenu()
     {
-        HowToScreen.SetActive(false);
+        SceneManager.LoadScene("MainMenu");
+    }
+    
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        PauseMenu.SetActive(false);
+        
     }
 
     public void QuitGame()

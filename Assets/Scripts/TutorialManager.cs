@@ -51,11 +51,11 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator CloseTutorial()
     {
-        countdownText.text = "Returning to MainMenu" + "\n" + "3";
+        countdownText.text = "Returning to MainMenu:" + "\n" + "3";
         yield return new WaitForSeconds(1);
         countdownText.text = "Returning to MainMenu:" + "\n" + "2";
         yield return new WaitForSeconds(1);
-        countdownText.text = "Returning to MainMenu" + "\n" + "1";
+        countdownText.text = "Returning to MainMenu:" + "\n" + "1";
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("MainMenu");
     }
